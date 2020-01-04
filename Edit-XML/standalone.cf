@@ -1,0 +1,65 @@
+#! /usr/sbin/cf-agent -f
+
+body common control
+	{
+		inputs					=>	{ "/usr/share/cfengine3/masterfiles/lib/stdlib.cf" };
+		bundlesequence	=>	{ "alone" };
+	}
+
+bundle agent alone
+	{
+		files:
+			"/tmp/some.xml"
+				create		=> "true",
+				edit_xml	=> "initialize",
+				edit_xml	=> "first",
+				edit_xml	=> "second",
+				# Uncomment the next line to produce non-convergence.
+				#edit_xml	=> "badEdit",
+				classes		=> if_repaired("aloneLint");
+
+		commands:
+			aloneLint::
+				"/usr/bin/xmllint --format -o /tmp/aloneLint /tmp/some.xml";
+				"/bin/mv -f /tmp/aloneLint /tmp/some.xml";
+	}
+
+bundle edit_xml initialize
+	{
+		build_xpath:
+			"/Server/Service/Engine/Host";
+	}
+
+bundle edit_xml first
+	{
+		insert_tree:
+			"<Host name=\"cfe_host\"><Alias>cfe_alias</Alias></Host>"
+				select_xpath => "/Server/Service/Engine";
+	}
+
+bundle edit_xml second
+	{
+		insert_tree:
+			"<source>
+<name>movies</name>
+<path pathversion=\"1\">/home/kodi/video/movies/</path>
+<allowsharing>true</allowsharing>
+</source>
+"
+				select_xpath => "/Server/Service";
+	}
+
+bundle edit_xml badEdit
+	{
+		insert_tree:
+		# note that leading space after the opening quote would cause a runtime error.
+			"<sink>
+				<name>movies</name>
+				<path pathversion=\"1\">/home/kodi/video/movies/</path>
+				<allowsharing>true</allowsharing>
+			</sink>
+"
+				select_xpath => "/Server/Service";
+	}
+
+# vim: set paste ts=2 sw=2 filetype=cf3 :
