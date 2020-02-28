@@ -26,10 +26,10 @@ I use Debian so some paths and conventions may be specific to that distro. Due t
 Options to run the script:
 ```
 chmod 755 ./tryOne.cf
-cf-promises -f ./tryOne.cf														# Check for coding and syntax errors.
-./tryOne.cf                                   				# Runs quietly but outputs runtime errors. Beware of 
-																											# running too soon after previous run due to locking/ifelapsed.
-cf-agent -K -I -f ./tryOne.cf													# My favourite way to run
-cf-agent -K -v -f ./tryOne.cf | tee /tmp/cf3Output		# Run verbosely.
+cf-promises -f ./tryOne.cf                            # Check for coding and syntax errors.
+./tryOne.cf                                           # Runs quietly but outputs runtime errors. Beware of 
+                                                      # running too soon after previous run due to locking/ifelapsed.
+cf-agent -K -I -f ./tryOne.cf                         # My favourite way to run
+cf-agent -K -v -f ./tryOne.cf | tee /tmp/cf3Output    # Run verbosely.
 ```
 

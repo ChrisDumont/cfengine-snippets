@@ -3,7 +3,7 @@
 
 # To run:
 # $ chmod 755 tryThree.cf
-#	$ cf-promises -f ./tryThree.cf		# Check for errors.
+# $ cf-promises -f ./tryThree.cf    # Check for errors.
 # $ cf-agent -K -I -f ./tryThree.cf # My favourite way to run.
 
 #######################################################

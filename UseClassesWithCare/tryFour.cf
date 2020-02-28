@@ -3,8 +3,8 @@
 
 # To run:
 # $ chmod 755 tryFour.cf
-#	$ cf-promises -f ./tryFour.cf			# Check for errors.
-# $ cf-agent -K -I -f ./tryFour.cf	# My favourite way to run.
+# $ cf-promises -f ./tryFour.cf      # Check for errors.
+# $ cf-agent -K -I -f ./tryFour.cf  # My favourite way to run.
 
 #######################################################
 body common control

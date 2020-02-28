@@ -3,7 +3,7 @@
 
 # To run:
 # $ chmod 755 tryTwo.cf
-#	$ cf-promises -f ./tryTwo.cf														# Check for errors
+# $ cf-promises -f ./tryTwo.cf                            # Check for errors
 # $ cf-agent -K -I -v -f ./tryTwo.cf | tee /tmp/cf3Output # Runs verbosely.
 
 #######################################################
