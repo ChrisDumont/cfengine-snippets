@@ -1,0 +1,38 @@
+#!/usr/sbin/cf-agent -f
+# tryOne.cf
+
+# To run:
+# $ chmod 755 tryOne.cf
+#	$ cf-promises -f ./tryOne.cf		# Check for errors.
+# $ cf-agent -K -I -f ./tryOne.cf # My favourite way to run.
+
+#######################################################
+body common control
+	{
+		inputs						=>	{ "/var/lib/cfengine3/inputs/lib/stdlib.cf" };
+		bundlesequence		=>	{ "install1" };
+	}
+
+bundle agent install1 {
+	packages:
+		"approx"
+			policy					=> "present",
+			package_module	=> apt_get;
+
+	files:
+		"/opt/approx/."
+			create					=> "true";
+
+		"/opt/approx/."
+			comment					=> "This generates an error because the approx user and group have not yet been created.",
+			perms						=> mog("0755", "approx", "approx"),
+			classes					=> if_ok("install1FixedPerms");
+
+	reports:
+		install1FixedPerms::
+			"install1 success.";
+		!install1FixedPerms::
+			"install1 failed.";
+}
+
+#vim: set paste ts=2 sw=2 filetype=cf3 :

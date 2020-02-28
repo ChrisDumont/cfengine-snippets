@@ -1,0 +1,39 @@
+#!/usr/sbin/cf-agent -f
+# tryThree.cf
+
+# To run:
+# $ chmod 755 tryThree.cf
+#	$ cf-promises -f ./tryThree.cf		# Check for errors.
+# $ cf-agent -K -I -f ./tryThree.cf # My favourite way to run.
+
+#######################################################
+body common control
+	{
+		inputs						=>	{ "/var/lib/cfengine3/inputs/lib/stdlib.cf" };
+		bundlesequence		=>	{ "install3" };
+	}
+
+bundle agent install3 {
+	classes:
+		"approxExists3" expression	=> regline("^approx:.*$",	"/etc/passwd");
+
+	packages:
+		"approx"
+			policy					=> "present",
+			package_module	=> apt_get;
+
+	files:
+		approxExists3::
+			"/opt/approx/."
+				create				=> "true";
+
+			"/opt/approx/."
+				perms					=> mog("0755", "approx", "approx"),
+				classes				=> if_ok("install3FixedPerms");
+
+	reports:
+		install3FixedPerms::
+			"install3 success.";
+}
+
+#vim: set paste ts=2 sw=2 filetype=cf3 :

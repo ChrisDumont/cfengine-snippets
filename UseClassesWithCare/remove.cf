@@ -1,0 +1,35 @@
+#!/usr/sbin/cf-agent -f
+# remove.cf
+
+# To run:
+# $ chmod 755 remove.cf
+#	$ cf-promises -f ./remove.cf		# Check for errors.
+# $ cf-agent -K -I -f ./remove.cf # My favourite way to run.
+
+#######################################################
+body common control
+	{
+		inputs						=>	{ "/var/lib/cfengine3/inputs/lib/stdlib.cf" };
+		bundlesequence		=>	{ "remove" };
+	}
+
+bundle agent remove {
+	packages:
+		"approx"
+			policy					=> "absent",
+			package_module	=> apt_get;
+
+	files:
+		"/opt/approx"
+			delete						=> tidy;
+		"/etc/passwd"
+			edit_line					=> delete_lines_matching("^approx:.*$");
+
+		"/etc/group"
+			edit_line					=> delete_lines_matching("^approx:.*$");
+
+	reports:
+		"remove removed approx.";
+}
+
+#vim: set paste ts=2 sw=2 filetype=cf3 :

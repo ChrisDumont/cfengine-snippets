@@ -1,0 +1,39 @@
+#!/usr/sbin/cf-agent -f
+# tryFour.cf
+
+# To run:
+# $ chmod 755 tryFour.cf
+#	$ cf-promises -f ./tryFour.cf			# Check for errors.
+# $ cf-agent -K -I -f ./tryFour.cf	# My favourite way to run.
+
+#######################################################
+body common control
+	{
+		inputs						=>	{ "/var/lib/cfengine3/inputs/lib/stdlib.cf" };
+		bundlesequence		=>	{ "install4" };
+	}
+
+bundle agent install4 {
+	packages:
+		"approx"
+			policy					=> "present",
+			package_module	=> apt_get,
+			classes					=> if_repaired("approxExists4");
+
+	files:
+		approxExists4::
+			"/opt/approx/."
+				create				=> "true";
+
+			"/opt/approx/."
+				perms					=> mog("0755", "approx", "approx"),
+				classes				=> if_ok("install4FixedPerms");
+
+	reports:
+		install4FixedPerms::
+			"install4 success.";
+		!install4FixedPerms::
+			"install4 failed. This is expected. Might succeed on the next pass.";
+}
+
+#vim: set paste ts=2 sw=2 filetype=cf3 :
