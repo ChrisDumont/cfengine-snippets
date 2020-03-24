@@ -21,7 +21,7 @@ I mentioned near the top that repeated runs of cf-agent might or might not sort 
 #### Notes
 Intended audience: those already comfortable with cfengine. These scripts, of necessity, run as root and change important things on the system it's run on. The 'approx' package is installed and removed, /etc/passwd and /etc/group are directly edited. If you're not comfortable with that either review these scripts closely or run them on a throwaway box or virtual server.
 
-I use Debian so some paths and conventions may be specific to that distro. Due to a slight incompatibility between Debian Buster and cfengine3-3.12 warnings (W: ... --force-yes ... --allow...) will likely be issued. They are, indeed, warnings and can be safely ignored.
+I use Debian so some paths and conventions may be specific to that distro. Due to a slight incompatibility between Debian Buster and cfengine3-3.12 warnings (W: ... --force-yes ... --allow...) will likely be issued. They are, indeed, warnings and can be safely ignored. UPDATE: My bad. The warning was issued due to my running a mix of cfengine 3.9 (Stretch) and 3.12 (Buster). I had mistakenly used the 3.9 version of the /var/lib/cfengine3/modules/ tree. The 3.12 version has updated the options to apt-get such that there are no more warnings.
 
 Options to run the script:
 ```
